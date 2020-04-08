@@ -1,4 +1,6 @@
-﻿using csPixelGameEngine;
+﻿using Console3DEngineLibrary;
+using Console3DEngineLibrary.Map;
+using csPixelGameEngine;
 using System;
 
 namespace VoxelRendererUI
@@ -7,30 +9,51 @@ namespace VoxelRendererUI
     {
         private static Random _random = new Random();
         private static PixelGameEngine _pixelGameEngine;
+        private static Game _game;
         internal static void Main()
         {
+            var mapLines = new[]
+            {
+                "xxxxxxxxxxxxxxxxxxxx",
+                "x y                x",
+                "x    y        y    x",
+                "x y                x",
+                "x                  x",
+                "x   y              x",
+                "x                  x",
+                "x  y           x   x",
+                "x      y           x",
+                "x            y     x",
+                "x      y     y     x",
+                "xxxxxxxxxxxxxxxxxxxx"
+            };
+
+            var mapConfig = new MapConfig
+            {
+                EmptyChar = ' ',
+                PlayerChar = 'p'
+            };
+            var fov = 90;
+
             var appSettings = new EngineWindowSettings
             {
                 AppName = "VoxelRenderer",
-                ScreenWidth = 150,
-                ScreenHeight = 150,
-                PixelHeight = 4,
-                PixelWidth = 4
+                ScreenWidth = 600,
+                ScreenHeight = 300,
+                PixelHeight = 2,
+                PixelWidth = 2
             };
 
             _pixelGameEngine = EngineWindowUtility.CreateEngine(appSettings);
+            _game = new Game(ASCIIMap.FromLines(mapConfig, mapLines), fov, _pixelGameEngine);
 
             _pixelGameEngine.OnFrameUpdate += PixelGameEngine_OnFrameUpdate;
-
             _pixelGameEngine.Start();
         }
 
         private static void PixelGameEngine_OnFrameUpdate(object sender, FrameUpdateEventArgs frameUpdateArgs)
         {
-            for (uint x = 0; x < _pixelGameEngine.ScreenWidth; x++)
-                for (uint y = 0; y < _pixelGameEngine.ScreenHeight; y++)
-                    _pixelGameEngine.Draw(x, y, new Pixel((byte)_random.Next(255), (byte)_random.Next(255), (byte)_random.Next(255)));
-
+            _game.Update(frameUpdateArgs.ElapsedTime);
             _pixelGameEngine.DrawString(0, 0, $"{(int)(1 / frameUpdateArgs.ElapsedTime)} FPS", Pixel.WHITE);
         }
     }
