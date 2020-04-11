@@ -15,16 +15,16 @@ namespace VoxelRendererUI
             var mapLines = new[]
             {
                 "xxxxxxxxxxxxxxxxxxxx",
-                "x y                x",
-                "x    y        y    x",
-                "x y                x",
+                "x   x  x  y        x",
+                "x   x  x  y        x",
+                "xxxx     y   xxxxxxx",
+                "x        z         x",
+                "x       z z        x",
+                "x      z   z       x",
+                "x     z     z      x",
+                "x    z       z     x",
                 "x                  x",
-                "x   y              x",
                 "x                  x",
-                "x  y           x   x",
-                "x      y           x",
-                "x            y     x",
-                "x      y     y     x",
                 "xxxxxxxxxxxxxxxxxxxx"
             };
 
@@ -38,10 +38,10 @@ namespace VoxelRendererUI
             var appSettings = new EngineWindowSettings
             {
                 AppName = "VoxelRenderer",
-                ScreenWidth = 600,
-                ScreenHeight = 300,
-                PixelHeight = 2,
-                PixelWidth = 2
+                ScreenWidth = 1280,
+                ScreenHeight = 720,
+                PixelHeight = 1,
+                PixelWidth = 1
             };
 
             _pixelGameEngine = EngineWindowUtility.CreateEngine(appSettings);

@@ -214,26 +214,28 @@ namespace Console3DEngineLibrary
                 drawEnd = _pixelGameEngine.ScreenHeight;
             }
 
+            // Draw above box
             if (0 < drawStart)
-                for (var i = 0; i < drawStart; i++)
-                {
-                    var color2 = i > 10 ? Color.Red : Color.DarkRed;
-                    _pixelGameEngine.Draw((uint)x, (uint)i, new Pixel { a = color2.A, b = color2.B, r = color2.R, g = color2.G});
-                }
+            {
+                var color2 = new Pixel { a = Color.DarkSlateGray.A, b = Color.DarkSlateGray.B, r = Color.DarkSlateGray.R, g = Color.DarkSlateGray.G };
+                _pixelGameEngine.DrawLine(x, 0, x, (int)drawStart, color2);
+            }
 
+            // Draw below box
             if (drawEnd < _pixelGameEngine.ScreenHeight)
             {
-                for (var i = drawEnd + 1; i < _pixelGameEngine.ScreenHeight; i++)
-                {
-                    var color2 = i > _pixelGameEngine.ScreenHeight - 10 ? Color.Red : Color.DarkRed;
-                    _pixelGameEngine.Draw((uint)x, (uint)i, new Pixel { a = color2.A, b = color2.B, r = color2.R, g = color2.G });
-                }
+                var darkestColor = new Pixel { a = Color.Black.A, b = Color.Black.B, r = Color.Black.R, g = Color.Black.G };
+                var lighterColor = new Pixel { a = Color.DimGray.A, b = Color.DimGray.B, r = Color.DimGray.R, g = Color.DimGray.G };
+
+                var middleY = (int)(((float) 0.3 / (float) _pixelGameEngine.ScreenWidth) * MathF.Pow(x - (float)_pixelGameEngine.ScreenWidth / 2, 2) + (float)_pixelGameEngine.ScreenHeight / 1.5f);
+                
+                _pixelGameEngine.DrawLine(x, middleY + 1, x, (int)_pixelGameEngine.ScreenHeight, darkestColor);
+                _pixelGameEngine.DrawLine(x, (int)drawEnd,x, middleY, lighterColor);
             }
 
-            for (var y = drawStart; y <= drawEnd; y++)
-            {
-                _pixelGameEngine.Draw((uint)x, (uint)y, new Pixel { a = color.A, b = color.B, r = color.R, g = color.G });
-            }
+            // Draw box
+            var color3 = new Pixel {a = color.A, b = color.B, r = color.R, g = color.G};
+            _pixelGameEngine.DrawLine(x, (int)drawStart, x, (int)drawEnd, color3);
         }
     }
 }
